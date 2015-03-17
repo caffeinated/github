@@ -32,6 +32,13 @@ class Client
     public function api($name)
     {
         switch($name) {
+            case 'repo':
+            case 'repos':
+            case 'repository':
+            case 'repositories':
+                $api = new Api\Repo($this);
+                break;
+
             case 'user':
                 $api = new Api\User($this);
                 break;

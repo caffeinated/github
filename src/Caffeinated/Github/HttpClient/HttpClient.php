@@ -17,11 +17,7 @@ class HttpClient implements HttpClientInterface
     protected $api_version = 'v3';
 
     protected $options = array(
-        // 'user_agent'  => 'caffeinated-github',
         'timeout'     => 10,
-        // 'api_limit'   => 5000,
-        // 'api_version' => 'v3',
-        // 'cache_dir'   => null
     );
 
     protected $headers = array();
@@ -37,7 +33,7 @@ class HttpClient implements HttpClientInterface
         $client       = $client ?: new GuzzleClient(['base_url' => $this->base_url, 'defaults' => $this->options]);
         $this->client = $client;
 
-        $this->addListener('request.error', array(new ErrorListener($this->options), 'onRequestError'));
+        // $this->addListener('error', array(new ErrorListener($this->options), 'onError'));
 
         $this->clearHeaders();
     }
@@ -54,15 +50,15 @@ class HttpClient implements HttpClientInterface
 
     public function clearHeaders()
     {
-        // $this->headers = array(
-        //     'Accept'     => sprintf('application/vnd.github.%s.json', $this->api_version),
-        //     'User-Agent' => sprintf('%s', $this->user_agent),
-        // );
+        $this->headers = array(
+            'Accept'     => sprintf('application/vnd.github.%s+json', $this->api_version),
+            'User-Agent' => sprintf('%s', $this->user_agent),
+        );
     }
 
     public function addListener($eventName, $listener)
     {
-        $this->client->getEmitter()->on($eventName, $listener);
+        $this->client->getEmitter()->attach($listener[0]);
     }
 
     public function addSubscriber(EventSubscriberInterface $subscriber)
@@ -117,8 +113,8 @@ class HttpClient implements HttpClientInterface
 
     public function authenticate($tokenOrLogin, $password = null, $method)
     {
-        $this->addListener('request.before_send', array(
-            new AuthListener($tokenOrLogin, $password, $method), 'onRequestBeforeSend'
+        $this->addListener('before', array(
+            new AuthListener($tokenOrLogin, $password, $method), 'onBefore'
         ));
     }
 
@@ -134,12 +130,15 @@ class HttpClient implements HttpClientInterface
 
     protected function createRequest($httpMethod, $path, $body = null, array $headers = array(), array $options = array())
     {
-        return $this->client->createRequest(
+        $request = $this->client->createRequest(
             $httpMethod,
             $path,
-            array_merge($this->headers, $headers),
-            $body,
+            ['headers' => array_merge($this->headers, $headers)],
             $options
         );
+
+        $request->setBody($body);
+
+        return $request;
     }
 }

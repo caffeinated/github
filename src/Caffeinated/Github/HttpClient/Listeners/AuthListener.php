@@ -1,11 +1,13 @@
 <?php
 namespace Caffeinated\Github\HttpClient\Listeners;
 
-use Caffeinated\Github\Client;
-use Guzzle\Common\Event;
 use RuntimeException;
+use Caffeinated\Github\Client;
+use GuzzleHttp\Event\EmitterInterface;
+use GuzzleHttp\Event\SubscriberInterface;
+use GuzzleHttp\Event\BeforeEvent;
 
-class AuthListener
+class AuthListener implements SubscriberInterface
 {
     private $tokenOrLogin;
 
@@ -20,13 +22,26 @@ class AuthListener
         $this->method       = $method;
     }
 
-    public function onRequestBeforeSend(Event $event)
+    public function getEvents()
+    {
+        return [
+            'before' => ['onBefore']
+        ];
+    }
+
+    public function onBefore(BeforeEvent $event, $name)
     {
         if (is_null($this->method)) {
             return;
         }
 
+        $request = $event->getRequest();
+
         switch ($this->method) {
+            case Client::AUTH_HTTP_TOKEN:
+                $request->setHeader('Authorization', sprintf('token %s', $this->tokenOrLogin));
+                break;
+
             default:
                 throw new RuntimeException(sprintf('%s is not yet implemented.', $this->method));
                 break;
