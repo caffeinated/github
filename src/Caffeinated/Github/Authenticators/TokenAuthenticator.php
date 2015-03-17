@@ -12,7 +12,7 @@ class TokenAuthenticator extends AbstractAuthenticator
         }
 
         if (! array_key_exists('token', $config)) {
-            thrown new InvalidArgumentException('The token authenticator requires a token.');
+            throw new InvalidArgumentException('The token authenticator requires a token.');
         }
 
         $this->client->authenticate($config['token'], 'http_token');

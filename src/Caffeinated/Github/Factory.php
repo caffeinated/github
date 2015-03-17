@@ -33,10 +33,6 @@ class Factory
     {
         $client = new Client($http);
 
-        dd($config);
-
-        dd(array_get($config, 'method'));
-
         return $this->auth->make(array_get($config, 'method'))->with($client)->authenticate($config);
     }
 }

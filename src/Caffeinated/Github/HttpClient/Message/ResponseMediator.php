@@ -1,8 +1,8 @@
 <?php
 namespace Caffeinated\Github\HttpClient\Message;
 
-use Guzzle\Http\Message\Response;
-use Guzzle\Exception\ApiLimitExceedException;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Exception\ApiLimitExceedException;
 
 class ResponseMediator
 {
