@@ -32,8 +32,8 @@ class HttpClient implements HttpClientInterface
 
         $client       = $client ?: new GuzzleClient(['base_url' => $this->base_url, 'defaults' => $this->options]);
         $this->client = $client;
-
-        // $this->addListener('error', array(new ErrorListener($this->options), 'onError'));
+        
+        $this->client->setDefaultOption('verify', false);
 
         $this->clearHeaders();
     }
