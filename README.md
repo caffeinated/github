@@ -33,7 +33,7 @@ Once this operation is complete, simply add both the service provider and facade
 
 #### Facade
 ```
-'Module' => 'Caffeinated\Github\Facades\Github',
+'Github' => 'Caffeinated\Github\Facades\Github',
 ```
 
 And that's it! With your coffee in reach, start calling on the GitHub API!
