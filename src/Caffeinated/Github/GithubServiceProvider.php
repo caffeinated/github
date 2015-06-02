@@ -37,6 +37,12 @@ class GithubServiceProvider extends ServiceProvider
         $this->registerGithub($this->app);
     }
 
+	/**
+	 * Register the GitHub factory class.
+	 *
+	 * @param  App  $app
+	 * @return null
+	 */
     protected function registerFactory($app)
     {
         $app->singleton('github.factory', function($app) {
@@ -49,6 +55,12 @@ class GithubServiceProvider extends ServiceProvider
         $app->alias('github.factory', 'Caffeinated\Github\Factory');
     }
 
+	/**
+	 * Register the GitHub class.
+	 *
+	 * @param  App  $app
+	 * @return null
+	 */
     protected function registerGithub($app)
     {
         $app->singleton('github', function($app) {

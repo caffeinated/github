@@ -5,8 +5,15 @@ use Caffeinated\Github\Api\AbstractApi;
 
 class Releases extends AbstractApi
 {
-	public function all($owner, $repo)
+	/**
+	 * Returns an array of all repository releases.
+	 *
+	 * @param  string  $owner
+	 * @param  string  $repository
+	 * @return array
+	 */
+	public function all($owner, $repository)
 	{
-		return $this->get('repos/'.rawurlencode($owner).'/'.rawurlencode($repo).'/releases');
+		return $this->get('repos/'.rawurlencode($owner).'/'.rawurlencode($repository).'/releases');
 	}
 }
