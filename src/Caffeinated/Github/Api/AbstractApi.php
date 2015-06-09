@@ -36,7 +36,12 @@ abstract class AbstractApi
         }
 
         $response = $this->client->getHttpClient()->get($path, $parameters, $requestHeaders);
+        $content  = ResponseMediator::getContent($response);
 
-        return ResponseMediator::getContent($response);
+        if (is_array($content)) {
+            return collect($content);
+        }
+
+        return $content;
     }
 }

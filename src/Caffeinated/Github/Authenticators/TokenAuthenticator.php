@@ -3,8 +3,15 @@ namespace Caffeinated\Github\Authenticators;
 
 use InvalidArgumentException;
 
-class TokenAuthenticator extends AbstractAuthenticator
+class TokenAuthenticator extends AbstractAuthenticator implements AuthenticatorInterface
 {
+    /**
+	 * Authenticate the client and return them.
+	 *
+	 * @param  array  $config
+	 * @throws InvalidArgumentException
+	 * @return Caffeinated\Github\Client
+	 */
     public function authenticate(array $config)
     {
         if (! $this->client) {

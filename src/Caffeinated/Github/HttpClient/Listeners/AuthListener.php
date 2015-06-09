@@ -38,10 +38,32 @@ class AuthListener implements SubscriberInterface
         $request = $event->getRequest();
 
         switch ($this->method) {
+            case Client::AUTH_HTTP_PASSWORD:
+                $request->setHeader('Authorization', sprintf('Basic %s', base64_encode($this->tokenOrLogin.':'.$this->password)));
+                break;
             case Client::AUTH_HTTP_TOKEN:
                 $request->setHeader('Authorization', sprintf('token %s', $this->tokenOrLogin));
                 break;
+            case Client::AUTH_URL_CLIENT_ID:
+                $url = $request->getUrl();
 
+                $parameters = [
+                    'client_id'     => $this->tokenOrLogin,
+                    'client_secret' => $this->password
+                ];
+
+                $url .= (false === strpos($url, '?') ? '?' : '&');
+                $url .= utf8_encode(http_build_query($parameters, '', '&'));
+
+                $request->setUrl($url);
+                break;
+            case Client::AUTH_URL_TOKEN:
+                $url  = $request->getUrl();
+                $url .= (false === strpos($url, '?') ? '?' : '&');
+                $url .= utf8_encode(http_build_query(['access_token' => $this->tokenOrLogin], '', '&'));
+
+                $request->getUrl($url);
+                break;
             default:
                 throw new RuntimeException(sprintf('%s is not yet implemented.', $this->method));
                 break;

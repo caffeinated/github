@@ -28,7 +28,7 @@ class Releases extends AbstractApi
 	 * @param  int     $id
 	 * @return array
 	 */
-	public function get($owner, $repository, $id)
+	public function show($owner, $repository, $id)
 	{
 		return $this->get('repos/'.rawurlencode($owner).'/'.rawurlencode($repository).'/releases/'.rawurlencode($id));
 	}
