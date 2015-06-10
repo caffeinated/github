@@ -3,7 +3,7 @@ namespace Caffeinated\Github;
 
 use Caffeinated\Github\Authenticators\AuthenticatorFactory;
 use Caffeinated\Github\Client;
-use Caffeinated\Github\HttpClient\HttpClient;
+use Caffeinated\Github\HttpClient\CachedHttpClient;
 
 class Factory
 {
@@ -49,7 +49,7 @@ class Factory
      */
     protected function getHttpClient()
     {
-        return new HttpClient();
+        return new CachedHttpClient(['cache_dir' => storage_path('cache/caffeinated-github')]);
     }
 
     /**
@@ -59,7 +59,7 @@ class Factory
      * @param  array                                     $config
      * @return Caffeinated\Github\Client
      */
-    protected function getClient(HttpClient $http, array $config)
+    protected function getClient(CachedHttpClient $http, array $config)
     {
         $client = new Client($http);
 

@@ -11,26 +11,17 @@ use GuzzleHttp\Client as GuzzleClient;
 class HttpClient implements HttpClientInterface
 {
     /**
-     * @var string
-     */
-    protected $base_url = 'https://api.github.com/';
-
-    /**
-     * @var string
-     */
-    protected $user_agent = 'caffeinated-github';
-
-    /**
-     * @var string
-     */
-    protected $api_version = 'v3';
-
-    /**
      * @var array
      */
-    protected $options = array(
-        'timeout'     => 10,
-    );
+    protected $options = [
+        'base_url'    => 'https://api.github.com/',
+        'user_agent'  => 'caffeinated-github',
+        'api_version' => 'v3',
+        'cache_dir'   => null
+        'guzzle'      => [
+            'timeout' => 10
+        ],
+    ];
 
     /**
      * @var array
@@ -57,7 +48,7 @@ class HttpClient implements HttpClientInterface
     {
         $this->options = array_merge($this->options, $options);
 
-        $client       = $client ?: new GuzzleClient(['base_url' => $this->base_url, 'defaults' => $this->options]);
+        $client       = $client ?: new GuzzleClient(['base_url' => $this->base_url, 'defaults' => $this->options['guzzle']]);
         $this->client = $client;
 
         $this->client->setDefaultOption('verify', false);
@@ -97,8 +88,8 @@ class HttpClient implements HttpClientInterface
     public function clearHeaders()
     {
         $this->headers = array(
-            'Accept'     => sprintf('application/vnd.github.%s+json', $this->api_version),
-            'User-Agent' => sprintf('%s', $this->user_agent),
+            'Accept'     => sprintf('application/vnd.github.%s+json', $this->options['api_version']),
+            'User-Agent' => sprintf('%s', $this->options['user_agent']),
         );
     }
 
