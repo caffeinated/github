@@ -17,7 +17,7 @@ class HttpClient implements HttpClientInterface
         'base_url'    => 'https://api.github.com/',
         'user_agent'  => 'caffeinated-github',
         'api_version' => 'v3',
-        'cache_dir'   => null
+        'cache_dir'   => null,
         'guzzle'      => [
             'timeout' => 10
         ],
@@ -48,7 +48,7 @@ class HttpClient implements HttpClientInterface
     {
         $this->options = array_merge($this->options, $options);
 
-        $client       = $client ?: new GuzzleClient(['base_url' => $this->base_url, 'defaults' => $this->options['guzzle']]);
+        $client       = $client ?: new GuzzleClient(['base_url' => $this->options['base_url'], 'defaults' => $this->options['guzzle']]);
         $this->client = $client;
 
         $this->client->setDefaultOption('verify', false);
