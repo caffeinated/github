@@ -18,7 +18,7 @@ class GithubServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		$this->publishes([
-			__DIR__.'/../../config/github.php' => config_path('github.php'),
+			__DIR__.'/../config/github.php' => config_path('github.php'),
 		]);
 	}
 
@@ -30,7 +30,7 @@ class GithubServiceProvider extends ServiceProvider
 	public function register()
 	{
 		$this->mergeConfigFrom(
-			__DIR__.'/../../config/github.php', 'github'
+			__DIR__.'/../config/github.php', 'github'
 		);
 
         $this->registerFactory($this->app);
